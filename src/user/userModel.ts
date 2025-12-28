@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 import { User } from "./userTypes"; // typescript part
 
 const userSchema = new mongoose.Schema<User>({
