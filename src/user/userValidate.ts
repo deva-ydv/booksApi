@@ -3,8 +3,7 @@ import { ZodSchema } from "zod";
 import createHttpError from "http-errors";
 
 const userValidate =
-  (schema: ZodSchema) =>
-  (req: Request, res: Response, next: NextFunction) => {
+  (schema: ZodSchema) => (req: Request, res: Response, next: NextFunction) => {
     try {
       schema.parse(req.body);
       next();

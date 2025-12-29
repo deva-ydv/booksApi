@@ -5,15 +5,9 @@ import bookRouter from './books/bookRouter'
 const app = express()
 app.use(express.json())
 
-app.get('/',(req,res)=>{
-    res.send("sjdkl")
-})
-
-
 app.use('/api/users',userRouter)
 app.use('/api/books',bookRouter)
 
 app.use(globalErrorHandler)
-
 
 export default app
