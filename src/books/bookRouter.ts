@@ -1,6 +1,6 @@
 import path from "node:path";
 import express from "express";
-import { createBook,listBook,updateBook } from "./bookController";
+import { createBook,listBook,updateBook,getSingleBook } from "./bookController";
 import multer from "multer";
 import { authenticate } from "../middleware/authenticate";
 
@@ -25,4 +25,6 @@ bookRouter.patch('/:bookId',authenticate,upload.fields([
 
 
 bookRouter.get('/',listBook)
+bookRouter.get('/:bookId',getSingleBook)
+
 export default bookRouter

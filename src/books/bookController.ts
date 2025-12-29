@@ -5,6 +5,7 @@ import cloudinary from "../config/cloudinary";
 import createHttpError from "http-errors";
 import BookModel from "./bookModel";
 import { AuthRequest } from "../middleware/authenticate";
+import mongoose from "mongoose";
 
 const createBook = async (req: Request, res: Response, next: NextFunction) => {
   const { title, genre } = req.body;
@@ -130,9 +131,9 @@ const updateBook = async (req: Request, res: Response, next: NextFunction) => {
       );
 
       const uploadResultPdf = await cloudinary.uploader.upload(bookFilePath, {
-        resource_type: "raw", 
+        resource_type: "raw",
         filename_override: bookFile.filename,
-        folder: "book-pdfs", 
+        folder: "book-pdfs",
         format: "pdf",
       });
 
@@ -159,16 +160,32 @@ const updateBook = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-
-const listBook = async (req: Request, res: Response, next: NextFunction) =>{
-
+const listBook = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const book = await BookModel.find();
-    res.json(book)
-    
+    res.json(book);
   } catch (error) {
-    return next(createHttpError(500,'Error while getting a books'))
+    return next(createHttpError(500, "Error while getting a books"));
   }
+};
 
-}
-export { createBook, updateBook, listBook };
+const getSingleBook = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const bookId = req.params.bookId;
+  try {
+    if (!mongoose.Types.ObjectId.isValid(bookId)) {
+      return next(createHttpError(400, "Invalid Book ID format"));
+    }
+    const book = await BookModel.findOne({ _id: bookId });
+    if (!book) {
+      return next(createHttpError(404, "Book not found"));
+    }
+    res.json(book);
+  } catch (error) {
+    return next(createHttpError(500, "Error while getting a books"));
+  }
+};
+export { createBook, updateBook, listBook, getSingleBook };
