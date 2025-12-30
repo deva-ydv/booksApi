@@ -26,6 +26,6 @@ bookRouter.patch('/:bookId',authenticate,upload.fields([
 
 bookRouter.get('/',listBook)
 bookRouter.get('/:bookId',getSingleBook)
-
 bookRouter.delete('/:bookId',authenticate,deleteBook)
+
 export default bookRouter

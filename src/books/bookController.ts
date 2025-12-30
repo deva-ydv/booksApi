@@ -169,11 +169,7 @@ const listBook = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const getSingleBook = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const getSingleBook = async (req: Request, res: Response, next: NextFunction) => {
   const bookId = req.params.bookId;
   try {
     if (!mongoose.Types.ObjectId.isValid(bookId)) {
