@@ -91,7 +91,7 @@ const updateBook = async (req: Request, res: Response, next: NextFunction) => {
 
     const book = await BookModel.findOne({ _id: bookId });
     if (!book) return next(createHttpError(404, "Book not found"));
-
+    // check access to author
     const _req = req as AuthRequest;
     if (book.author.toString() !== _req.userId) {
       return next(createHttpError(403, "Unauthorized"));
@@ -188,4 +188,64 @@ const getSingleBook = async (
     return next(createHttpError(500, "Error while getting a books"));
   }
 };
-export { createBook, updateBook, listBook, getSingleBook };
+
+const deleteBook = async (req: Request, res: Response, next: NextFunction) => {
+  const { bookId } = req.params;
+
+  try {
+    // 1. Validate ID
+    if (!mongoose.Types.ObjectId.isValid(bookId)) {
+      return next(createHttpError(400, "Invalid Book ID format"));
+    }
+
+    // 2. Find the book first to get file URLs and check ownership
+    const book = await BookModel.findById(bookId);
+    if (!book) {
+      return next(createHttpError(404, "Book not found"));
+    }
+
+    // 3. Authorization check
+    const _req = req as AuthRequest;
+    if (book.author.toString() !== _req.userId) {
+      return next(
+        createHttpError(403, "You cannot delete someone else's book")
+      );
+    }
+
+    /* ------------------ Delete from Cloudinary ------------------ */
+
+    // Extract Public IDs from URLs
+    // URL format: https://res.cloudinary.com/demo/image/upload/v12345/book-covers/xyz.jpg
+    // We need: "book-covers/xyz"
+
+    /* find book cover to delete */
+    const coverFileSplits = book.coverImage.split("/");
+    const coverImagePublicID =
+      coverFileSplits[coverFileSplits.length - 2] +
+      "/" +
+      coverFileSplits[coverFileSplits.length - 1].split(".")[0];
+
+    /* find book pdf to delete */
+
+    const bookFileSplits = book.file.split("/");
+    const bookFilePublicId =
+      bookFileSplits[bookFileSplits.length - 2] +
+      "/" +
+      bookFileSplits[bookFileSplits.length - 1];
+
+    // delete from couldinary
+    await Promise.all([
+      cloudinary.uploader.destroy(coverImagePublicID),
+      cloudinary.uploader.destroy(bookFilePublicId, {
+        resource_type: "raw",
+      }),
+    ]);
+    // delete form database
+    await BookModel.deleteOne({ _id: bookId });
+
+    return res.sendStatus(204);
+  } catch (err) {
+    return next(createHttpError(500, "cannot delete a book"));
+  }
+};
+export { createBook, updateBook, listBook, getSingleBook, deleteBook };
