@@ -17,5 +17,5 @@ Modular & scalable folder structure
 Node.js, Express, TypeScript, MongoDB+Mongoose, JWT(jsonwebtoken) ,bcrypt, Multer, Cloudinary, Zod, CORS
 
 👨‍💻 Author
-Deva
+Deva,
 Backend / MERN Developer
