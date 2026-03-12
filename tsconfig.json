@@ -21,6 +21,6 @@
     /* Developer Experience */
     "sourceMap": true
   },
-  "include": ["src", "index.ts"],
+  "include": ["src", "index.ts", "tests"],
   "exclude": ["node_modules", "dist"]
 }
