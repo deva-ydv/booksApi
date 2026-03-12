@@ -7,9 +7,11 @@ const startServer = async () => {
     await connectDB();
 
     const port = config.port || 3000;
-    app.listen(port, () => {
+
+    app.listen(port, "0.0.0.0", () => {
       console.log(`Server running on port ${port}`);
     });
+
   } catch (error) {
     console.error("Failed to start server", error);
     process.exit(1);
