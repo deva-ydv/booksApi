@@ -13,6 +13,10 @@ Zod-based request validation
 Global error handling
 Modular & scalable folder structure
 
+🧪 Testing
+Auth API Testing: Implemented comprehensive unit and integration tests for authentication flows (Sign up, Login, JWT verification).
+Database Mocking: Utilized database mocking techniques to simulate MongoDB behavior, ensuring tests are fast, deterministic, and independent of a live database connection.
+
 🛠 Tech Stack
 Node.js, Express, TypeScript, MongoDB+Mongoose, JWT(jsonwebtoken) ,bcrypt, Multer, Cloudinary, Zod, CORS
 
