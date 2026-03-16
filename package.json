@@ -7,8 +7,10 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "dev": "nodemon server.ts"
+  "test": "jest",
+  "dev": "nodemon server.ts",
+  "build": "tsc && npx shx cp -r public dist/",
+  "start": "node dist/server.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
