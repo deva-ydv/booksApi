@@ -9,10 +9,16 @@ const app = express()
 
 app.use(express.json())
 app.use(cors())
+app.use(express.static(path.join(process.cwd(), 'public')));
 
 
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../index.html'));
+// });
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
+  // process.cwd() is the root of your project
+  const indexPath = path.join(process.cwd(), 'public', 'index.html');
+  res.sendFile(indexPath);
 });
 
 // routes
