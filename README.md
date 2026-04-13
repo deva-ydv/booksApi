@@ -4,12 +4,6 @@ A production-ready backend system built using **Node.js, Express, TypeScript, an
 
 ---
 
-## 🚀 Live Demo
-
-👉 https://bookapis.devadeveloper.in/
-
----
-
 ## 🧠 Features
 
 * 🔐 JWT-based Authentication & Authorization
